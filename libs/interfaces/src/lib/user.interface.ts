@@ -17,6 +17,7 @@ export interface IUser {
   courses?: IUserCourses[];
 }
 export interface IUserCourses {
+    _id?: string;
   courseId: string;
   purchaseState: PurchaseState;
 }
