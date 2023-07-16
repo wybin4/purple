@@ -1,6 +1,6 @@
 import { IUser, UserRole } from '@purple/interfaces';
 import { compare, genSalt, hash } from 'bcryptjs';
-import { IUserCourses } from '../../../../../../libs/interfaces/src/lib/user.interface';
+import { IUserCourses, PurchaseState } from '../../../../../../libs/interfaces/src/lib/user.interface';
 
 export class UserEntity implements IUser {
   _id?: string;
@@ -40,5 +40,28 @@ export class UserEntity implements IUser {
       role: this.role,
       displayName: this.displayName
     }
+  }
+
+  public setCourseStatus(courseId: string, state: PurchaseState) {
+    const exist = this.courses.find(c => c._id === courseId);
+    if (!exist) {
+      this.courses.push({
+        courseId,
+        purchaseState: state
+      });
+      return this;
+    }
+    if (state === PurchaseState.Cancelled) {
+      this.courses = this.courses.filter(c => c._id !== courseId);
+      return this;
+    }
+    this.courses = this.courses.map(c => {
+      if (c._id === courseId) {
+        c.purchaseState = state;
+        return c;
+      }
+      return c;
+    });
+    return this;
   }
 }
