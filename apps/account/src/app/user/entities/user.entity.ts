@@ -9,7 +9,7 @@ export class UserEntity implements IUser {
   passwordHash: string;
   role: UserRole;
   courses?: IUserCourses[];
-  events: IDomainEvent[];
+  events: IDomainEvent[] = [];
 
   constructor(user: IUser) {
     this._id = user._id;
